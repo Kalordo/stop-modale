@@ -16,9 +16,29 @@
   var WATCH_KEYS = SHARED ? SHARED.WATCH_KEYS : ["quietWebEnabled", "quietWebMode", "quietWebUserSelectors", "quietWebUserNeedles", "quietWebDisabledSites", "quietWebAggression"];
 
   var MARK = "data-quietweb-hidden";
+  /** Propriétés inline !important appliquées au masquage (dé-masquage = removeProperty sur chacune). */
+  var HIDE_STYLE_PROPS = [
+    "display",
+    "visibility",
+    "opacity",
+    "pointer-events",
+    "max-height",
+    "max-width",
+    "overflow",
+    "clip-path",
+    "transform",
+    "z-index",
+    "content-visibility",
+    "position",
+    "inset"
+  ];
+  var reinforceMap = new Map();
+  var reinforceDebounceByEl = new Map();
+  var rafTokenByEl = new Map();
   var scheduled = false;
   var domObserver = null;
   var prudentTimer = null;
+  var periodicRescanTimer = null;
 
   var storageEnabled = false;
   var siteExcepted = false;
@@ -168,23 +188,121 @@
     return storageEnabled && !siteExcepted;
   }
 
+  function disconnectAllReinforce() {
+    reinforceMap.forEach(function (obs) {
+      try {
+        obs.disconnect();
+      } catch (e) {
+        /* */
+      }
+    });
+    reinforceMap.clear();
+    reinforceDebounceByEl.forEach(function (tid) {
+      clearTimeout(tid);
+    });
+    reinforceDebounceByEl.clear();
+    rafTokenByEl.forEach(function (tok) {
+      if (tok) tok.cancelled = true;
+    });
+    rafTokenByEl.clear();
+  }
+
+  function scheduleReinforceHideDebounced(el) {
+    var prev = reinforceDebounceByEl.get(el);
+    if (prev) clearTimeout(prev);
+    var tid = setTimeout(function () {
+      reinforceDebounceByEl.delete(el);
+      if (!el.isConnected || !el.hasAttribute(MARK)) return;
+      scheduleReapplyHide(el);
+    }, 100);
+    reinforceDebounceByEl.set(el, tid);
+  }
+
+  function applyAggressiveHide(el) {
+    var st = el.style;
+    st.setProperty("display", "none", "important");
+    st.setProperty("visibility", "hidden", "important");
+    st.setProperty("opacity", "0", "important");
+    st.setProperty("pointer-events", "none", "important");
+    st.setProperty("max-height", "0", "important");
+    st.setProperty("max-width", "0", "important");
+    st.setProperty("overflow", "hidden", "important");
+    st.setProperty("clip-path", "inset(50%)", "important");
+    st.setProperty("transform", "scale(0)", "important");
+    st.setProperty("z-index", "-2147483647", "important");
+    st.setProperty("content-visibility", "hidden", "important");
+    /* Contre les overlays position:fixed !important (feuille d’auteur) : l’inline gagne sur l’auteur sauf si le site réécrit après — voir renfort MutationObserver. */
+    st.setProperty("position", "static", "important");
+    st.setProperty("inset", "auto", "important");
+  }
+
+  function scheduleReapplyHide(el) {
+    var prev = rafTokenByEl.get(el);
+    if (prev) prev.cancelled = true;
+    var tok = { cancelled: false };
+    rafTokenByEl.set(el, tok);
+    requestAnimationFrame(function () {
+      if (tok.cancelled) {
+        rafTokenByEl.delete(el);
+        return;
+      }
+      requestAnimationFrame(function () {
+        rafTokenByEl.delete(el);
+        if (tok.cancelled || !el.isConnected || !el.hasAttribute(MARK)) return;
+        applyAggressiveHide(el);
+      });
+    });
+  }
+
+  function attachReinforceObserver(el) {
+    if (reinforceMap.has(el)) return;
+    var obs = new MutationObserver(function () {
+      if (!el.hasAttribute(MARK)) {
+        var t = reinforceDebounceByEl.get(el);
+        if (t) clearTimeout(t);
+        reinforceDebounceByEl.delete(el);
+        try {
+          obs.disconnect();
+        } catch (e) {
+          /* */
+        }
+        reinforceMap.delete(el);
+        return;
+      }
+      scheduleReinforceHideDebounced(el);
+    });
+    try {
+      obs.observe(el, {
+        attributes: true,
+        attributeFilter: ["style", "class"],
+        childList: true,
+        subtree: true
+      });
+      reinforceMap.set(el, obs);
+    } catch (e) {
+      /* */
+    }
+  }
+
   function unmarkAll() {
+    disconnectAllReinforce();
     document.querySelectorAll("[" + MARK + "]").forEach(function (el) {
       el.removeAttribute(MARK);
-      el.style.removeProperty("display");
-      el.style.removeProperty("visibility");
-      el.style.removeProperty("pointer-events");
-      el.style.removeProperty("opacity");
+      for (var i = 0; i < HIDE_STYLE_PROPS.length; i++) {
+        try {
+          el.style.removeProperty(HIDE_STYLE_PROPS[i]);
+        } catch (e) {
+          /* */
+        }
+      }
     });
   }
 
   function markHidden(el, source) {
     if (!isElement(el) || el.hasAttribute(MARK)) return false;
     el.setAttribute(MARK, "1");
-    el.style.setProperty("display", "none", "important");
-    el.style.setProperty("visibility", "hidden", "important");
-    el.style.setProperty("pointer-events", "none", "important");
-    el.style.setProperty("opacity", "0", "important");
+    applyAggressiveHide(el);
+    attachReinforceObserver(el);
     tryRelaxScroll(el);
     queueStatsDelta(source === "heuristic" ? "heuristic" : "selector");
     return true;
@@ -220,7 +338,7 @@
     var pos = cs.position;
     if (pos === "fixed" || pos === "sticky") {
       var z = parseInt(cs.zIndex, 10);
-      if (!isNaN(z) && z >= 40) return true;
+      if (!isNaN(z) && z >= 35) return true;
     }
     if (el.getAttribute("role") === "dialog") return true;
     if (el.getAttribute("aria-modal") === "true") return true;
@@ -239,13 +357,13 @@
     var pos = cs.position;
     if (pos !== "fixed" && pos !== "sticky") return false;
     var z = parseInt(cs.zIndex, 10);
-    if (isNaN(z) || z < 80) return false;
+    if (isNaN(z) || z < 65) return false;
     var r = el.getBoundingClientRect();
     var vw = window.innerWidth;
     var vh = window.innerHeight;
     var area = r.width * r.height;
     var varea = vw * vh;
-    if (area < varea * 0.22) return false;
+    if (area < varea * 0.18) return false;
     return true;
   }
 
@@ -325,7 +443,7 @@
       var m = muts[i];
       for (var j = 0; j < m.addedNodes.length; j++) {
         var n = m.addedNodes[j];
-        if (isElement(n)) scanSubtree(n, 14);
+        if (isElement(n)) scanSubtree(n, 17);
       }
     }
   }
@@ -339,6 +457,22 @@
       applySelectors();
       scanChunked();
     });
+  }
+
+  function stopPeriodicRescan() {
+    if (periodicRescanTimer) {
+      clearInterval(periodicRescanTimer);
+      periodicRescanTimer = null;
+    }
+  }
+
+  function startPeriodicRescan() {
+    stopPeriodicRescan();
+    periodicRescanTimer = setInterval(function () {
+      if (!running) return;
+      applySelectors();
+      if (aggression === "max") scanChunked();
+    }, 22000);
   }
 
   function stopObserver() {
@@ -363,8 +497,10 @@
     running = next;
     if (next) {
       scheduleRun();
+      startPeriodicRescan();
       startObserver();
     } else {
+      stopPeriodicRescan();
       stopObserver();
       unmarkAll();
     }

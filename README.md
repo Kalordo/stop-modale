@@ -4,7 +4,9 @@
 
 Le dépôt de sources sur GitHub s’appelle **stop-modale** ; le nom du produit dans le navigateur reste **Quiet Web** (voir `manifest.json`, champ `author` : **3Devs**).
 
-**Version du manifest :** 2.1.1
+**Version du manifest :** 2.1.3
+
+Pour **maximiser** le blocage (bannières souvent dans une iframe), les scripts s’exécutent aussi dans les **sous-cadres** (`all_frames`). Si un lecteur ou un widget tiers est affecté sur un site précis, utilisez les **exceptions** pour ce domaine.
 
 ## Dépôt
 
