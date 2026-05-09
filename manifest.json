@@ -1,0 +1,68 @@
+{
+  "manifest_version": 3,
+  "name": "Quiet Web",
+  "version": "2.1.1",
+  "description": "Réduit les bannières cookies et les modales intrusives — réglages fins, stats locales, exceptions, export.",
+  "author": "Quiet Web",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "toggle-quiet-web": {
+      "suggested_key": {
+        "default": "Alt+Shift+Q",
+        "mac": "Alt+Shift+Q"
+      },
+      "description": "Activer ou désactiver Quiet Web (global)"
+    },
+    "rerun-quiet-web-tab": {
+      "suggested_key": {
+        "default": "Alt+Shift+R",
+        "mac": "Alt+Shift+R"
+      },
+      "description": "Réanalyser la page de l’onglet actif"
+    }
+  },
+  "icons": {
+    "16": "icons/icon128.png",
+    "32": "icons/icon128.png",
+    "48": "icons/icon128.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Quiet Web — clic pour les réglages rapides",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon128.png",
+      "32": "icons/icon128.png",
+      "48": "icons/icon128.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["early.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shared.js", "rules.js", "content.js"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "quietweb@local",
+      "strict_min_version": "109.0"
+    }
+  }
+}

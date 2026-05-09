@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quiet Web — Réglages</title>
+    <style>
+      :root {
+        --bg: #f6f7f8;
+        --card: #fff;
+        --text: #141820;
+        --muted: #5c6570;
+        --border: #d8dde3;
+        --accent: #0d6b6b;
+        --accent-hover: #0a5555;
+        --danger: #b42318;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 28px 24px 48px;
+        max-width: 720px;
+        margin-inline: auto;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.45;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 8px;
+      }
+      header img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+      h1 {
+        font-size: 22px;
+        font-weight: 650;
+        margin: 0;
+      }
+      .sub {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      section {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin-bottom: 16px;
+      }
+      section h2 {
+        font-size: 14px;
+        font-weight: 650;
+        margin: 0 0 12px;
+        letter-spacing: 0.02em;
+      }
+      label.field-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0 0 10px;
+      }
+      select,
+      textarea {
+        width: 100%;
+        font-size: 13px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        padding: 8px 10px;
+        background: #fff;
+      }
+      textarea {
+        min-height: 100px;
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.4;
+        resize: vertical;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .row input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      button {
+        font-size: 13px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #fff;
+        cursor: pointer;
+      }
+      button.primary {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent-hover);
+      }
+      button.primary:hover {
+        background: var(--accent-hover);
+      }
+      button.danger {
+        color: var(--danger);
+        border-color: #e8a29b;
+      }
+      .kbd {
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+        background: #eceff2;
+        padding: 2px 7px;
+        border-radius: 5px;
+      }
+      .banner {
+        font-size: 12px;
+        color: var(--muted);
+        background: #eef6f6;
+        border: 1px solid #c5e0e0;
+        padding: 12px 14px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      #toast {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        background: var(--text);
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        z-index: 9999;
+      }
+      #toast.show {
+        opacity: 1;
+      }
+      input[type="file"] {
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="icons/icon128.png" width="40" height="40" alt="" />
+      <div>
+        <h1>Quiet Web</h1>
+        <p class="sub">Réglages complets — tout est enregistré localement sur votre appareil.</p>
+      </div>
+    </header>
+
+    <p class="banner">
+      <strong>Rappel :</strong> masquer une bannière cookies ou une modale ne remplace pas un consentement réel ni une obligation légale. Utilisez Quiet Web en comprenant les implications pour la confidentialité et le bon fonctionnement des sites.
+    </p>
+
+    <section>
+      <h2>Général</h2>
+      <label class="row">
+        <input type="checkbox" id="optEnabled" />
+        <span>Extension activée (global)</span>
+      </label>
+      <label class="field-label" for="optMode">Mode de filtrage</label>
+      <p class="hint">Cookies : plateformes de consentement et textes associés. Modales : anti-adblock, newsletters, paywalls, etc.</p>
+      <select id="optMode">
+        <option value="all">Tout masquer</option>
+        <option value="cookies">Cookies seulement</option>
+        <option value="modals">Modales seulement</option>
+      </select>
+      <label class="field-label" for="optAggression" style="margin-top: 14px">Agressivité</label>
+      <p class="hint">Prudent : sélecteurs intégrés et les vôtres uniquement (pas d’analyse texte des overlays). Max : heuristique complète.</p>
+      <select id="optAggression">
+        <option value="max">Max</option>
+        <option value="prudent">Prudent</option>
+      </select>
+    </section>
+
+    <section>
+      <h2>Statistiques</h2>
+      <p class="hint">Compteurs agrégés stockés uniquement sur cet appareil (aucun envoi réseau). Chaque « élément masqué » correspond à un nœud caché par le script de contenu. Remise à zéro ou import des stats : tous les onglets ouverts sont notifiés pour vider leur tampon en mémoire (évite de réinjecter d’anciens comptages dans le stockage).</p>
+      <div class="hint" id="statsPanel" style="font-family: ui-monospace, monospace; line-height: 1.6">
+        <div>Total masqué : <strong id="stTotal">0</strong></div>
+        <div>Via sélecteurs (intégrés + perso) : <strong id="stSel">0</strong></div>
+        <div>Via analyse texte (mode Max) : <strong id="stHeu">0</strong></div>
+        <div style="margin-top: 8px; font-size: 11px; color: var(--muted)">Dernière mise à jour : <span id="stDate">—</span></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="danger" id="btnResetStats">Remettre les compteurs à zéro</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Sites exclus</h2>
+      <p class="hint">Un nom d’hôte par ligne (ex. <code>www.exemple.fr</code> ou <code>exemple.fr</code> pour inclure les sous-domaines). Quiet Web ne filtre pas ces sites.</p>
+      <textarea id="optSites" spellcheck="false" placeholder="exemple.fr&#10;partenaire.com"></textarea>
+    </section>
+
+    <section>
+      <h2>Règles personnalisées</h2>
+      <label class="field-label" for="optSelectors">Sélecteurs CSS (une règle par ligne)</label>
+      <p class="hint">Lignes vides ou commençant par <code>//</code> ignorées.</p>
+      <textarea id="optSelectors" spellcheck="false"></textarea>
+      <label class="field-label" for="optNeedles" style="margin-top: 14px">Mots repérés dans l’overlay (une entrée par ligne)</label>
+      <p class="hint">Utilisé en mode Max : si le texte visible contient la chaîne, masquage possible avec garde-fous.</p>
+      <textarea id="optNeedles" spellcheck="false"></textarea>
+    </section>
+
+    <section>
+      <h2>Raccourcis clavier</h2>
+      <p class="hint">
+        Par défaut : <span class="kbd">Alt+Shift+Q</span> activer/désactiver globalement, <span class="kbd">Alt+Shift+R</span> réanalyser l’onglet actif. Vous pouvez les modifier dans le navigateur (Chrome :
+        <code>chrome://extensions/shortcuts</code> — copiez-collez l’adresse dans la barre d’adresse).
+      </p>
+    </section>
+
+    <section>
+      <h2>Sauvegarde</h2>
+      <p class="hint">
+        Exportez votre configuration pour la réinstaller ailleurs ou après réinstallation du navigateur. Les imports chargent le formulaire ci-dessus : validez ensuite avec « Enregistrer les réglages » (sauf réinitialisation, qui écrit tout de suite).
+      </p>
+      <div class="actions">
+        <button type="button" class="primary" id="btnExport">Exporter JSON</button>
+        <div class="hint" style="margin: 0; display: flex; align-items: center; gap: 8px">
+          <span>Importer :</span>
+          <input type="file" id="importFile" accept="application/json,.json" />
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" id="btnImportMerge">Importer (fusionner avec la config actuelle)</button>
+        <button type="button" id="btnImportReplace">Importer (tout remplacer par le fichier)</button>
+      </div>
+      <div class="actions">
+        <button type="button" class="danger" id="btnReset">Réinitialiser aux valeurs par défaut</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Enregistrer</h2>
+      <p class="hint">Les changements dans cette page ne sont appliqués qu’après clic sur « Enregistrer les réglages ».</p>
+      <div class="actions">
+        <button type="button" class="primary" id="btnSave">Enregistrer les réglages</button>
+      </div>
+    </section>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="shared.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
