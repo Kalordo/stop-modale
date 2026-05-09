@@ -3,7 +3,7 @@
   "name": "Quiet Web",
   "version": "2.1.1",
   "description": "Réduit les bannières cookies et les modales intrusives — réglages fins, stats locales, exceptions, export.",
-  "author": "Quiet Web",
+  "author": "3Devs",
   "permissions": ["storage", "tabs"],
   "host_permissions": ["<all_urls>"],
   "background": {

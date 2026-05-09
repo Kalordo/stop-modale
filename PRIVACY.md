@@ -2,11 +2,11 @@
 
 **Dernière mise à jour :** 9 mai 2026  
 
-Quiet Web est une extension de navigateur. Cette politique décrit les données traitées **par l’extension sur votre appareil**.
+**Quiet Web** est une extension de navigateur publiée par **3Devs**. Cette politique décrit les données traitées **par l’extension sur votre appareil**.
 
-## Données collectées par l’éditeur
+## Données collectées par l’éditeur (3Devs)
 
-**Aucune.** Quiet Web ne contacte pas de serveur exploité par l’éditeur pour collecter des données personnelles, ne contient pas de télémétrie, ni de publicité, ni de suivi tiers.
+**Aucune.** Quiet Web ne contacte pas de serveur exploité par **3Devs** pour collecter des données personnelles, ne contient pas de télémétrie, ni de publicité, ni de suivi tiers.
 
 ## Données stockées localement
 
@@ -29,8 +29,8 @@ Le traitement a lieu **dans votre navigateur** lors de la visite de pages. L’e
 
 ## Contact
 
-Pour toute question relative à cette politique, contactez l’éditeur de l’extension via la page du magasin d’extensions (Opera Add-ons, Chrome Web Store, etc.) ou le canal de support que vous y indiquez.
+Pour toute question relative à cette politique, contactez **3Devs** via la page du magasin d’extensions (Opera Add-ons, Chrome Web Store, etc.) ou le canal de support indiqué sur la fiche de **Quiet Web**.
 
 ## Modifications
 
-L’éditeur peut mettre à jour cette politique. La version applicable est celle publiée avec l’extension ou sur l’URL de politique indiquée dans la fiche du magasin.
+**3Devs** peut mettre à jour cette politique. La version applicable est celle publiée avec l’extension ou sur l’URL de politique indiquée dans la fiche du magasin.

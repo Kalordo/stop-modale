@@ -1,8 +1,8 @@
 # Quiet Web
 
-Extension navigateur (**Manifest V3**) qui **réduit l’affichage** des bannières cookies (CMP courants) et des **modales intrusives** (anti-adblock, newsletters, etc.). Tout est traité **localement** : réglages et statistiques via `chrome.storage.local`, sans serveur dédié et **sans télémétrie**.
+**Quiet Web** est une extension navigateur (**Manifest V3**) développée par **3Devs**. Elle **réduit l’affichage** des bannières cookies (CMP courants) et des **modales intrusives** (anti-adblock, newsletters, etc.). Tout est traité **localement** : réglages et statistiques via `chrome.storage.local`, sans serveur dédié et **sans télémétrie**.
 
-Ce dépôt GitHub s’appelle **stop-modale** ; le nom affiché dans le navigateur reste **Quiet Web** (voir `manifest.json`).
+Le dépôt de sources sur GitHub s’appelle **stop-modale** ; le nom du produit dans le navigateur reste **Quiet Web** (voir `manifest.json`, champ `author` : **3Devs**).
 
 **Version du manifest :** 2.1.1
 
@@ -92,8 +92,8 @@ Un **nom d’hôte** par ligne dans les options. Une entrée `exemple.fr` couvre
 
 ## Confidentialité
 
-Aucune donnée n’est envoyée vers un serveur exploité par l’éditeur de l’extension. Le stockage local sert à la **configuration** et aux **statistiques agrégées**. Détails : **`PRIVACY.md`**.
+Aucune donnée n’est envoyée vers un serveur exploité par **3Devs**. Le stockage local sert à la **configuration** et aux **statistiques agrégées**. Détails : **`PRIVACY.md`**.
 
 ## Licence
 
-**MIT** — voir le fichier **`LICENSE`**. Vous pouvez l’adapter (auteur, année) selon votre situation.
+**MIT** — voir le fichier **`LICENSE`** (titulaire des droits : **3Devs**).

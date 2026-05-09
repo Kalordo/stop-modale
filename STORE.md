@@ -21,7 +21,7 @@ Même ZIP MV3, compte développeur Google, fiche similaire + URL de politique de
 - [ ] `manifest.json` : version incrémentée, description à jour, icônes présentes.
 - [ ] Tester sur un profil propre : installation, options, popup, raccourcis, stats.
 - [ ] Politique de confidentialité en ligne + lien exact à copier dans le formulaire.
-- [ ] Remplacer `"author": "Quiet Web"` par votre nom ou marque si besoin.
+- [ ] Vérifier que `"author": "3Devs"` dans `manifest.json` correspond à votre fiche éditeur sur le store.
 - [ ] Captures : popup, page d’options, exemple de site (sans données personnelles).
 
 ## ZIP (PowerShell, exemple)
