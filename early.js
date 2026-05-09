@@ -49,6 +49,8 @@
     "#shopify-pc__banner",
     "#shopify-pc__banner__backdrop",
     "#funding-choices",
+    ".fc-dialog",
+    ".fc-dialog-container",
     ".fc-consent-root",
     "#moove_gdpr_cookie_info_bar",
     "#termly-code-snippet-support",

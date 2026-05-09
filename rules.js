@@ -70,6 +70,7 @@ var QUIET_RULES = {
     "#adopt-modal",
     "#funding-choices",
     ".fc-dialog",
+    ".fc-dialog-container",
     ".fc-consent-root",
     "#ez-cookie-dialog-wrapper",
     "#ezmobfooter",
@@ -124,7 +125,22 @@ var QUIET_RULES = {
     "privacy policy",
     "politique de confidentialité",
     "gdpr",
-    "rgpd"
+    "rgpd",
+    "customsforge asks for your consent",
+    "welcome to customsforge",
+    "asks for your consent to use your personal data",
+    "list of partners",
+    "personalised advertising and content, advertising and content measurement",
+    "personalized advertising and content, advertising and content measurement",
+    "store and/or access information on a device"
+  ],
+
+  /** Textes de grands overlays CMP (IAB / Google UMP) — traités comme « strong » en mode cookies ou tout. */
+  strongCookieNeedles: [
+    "asks for your consent to use your personal data",
+    "customsforge asks for your consent",
+    "personalised advertising and content, advertising and content measurement",
+    "personalized advertising and content, advertising and content measurement"
   ],
 
   modalTextNeedles: [

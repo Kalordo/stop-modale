@@ -163,6 +163,7 @@
     if (mode === "all" || mode === "cookies") {
       hide = hide.concat(BASE.hideSelectors || []);
       soft = soft.concat(BASE.cookieTextNeedles || []);
+      strong = strong.concat(BASE.strongCookieNeedles || []);
     }
     if (mode === "all" || mode === "modals") {
       soft = soft.concat(BASE.modalTextNeedles || []);
